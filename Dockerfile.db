@@ -1,0 +1,11 @@
+# Utiliza una imagen base de MySQL
+FROM mysql:latest
+
+# Establece las variables de entorno para la configuración de MySQL
+ENV MYSQL_ROOT_PASSWORD=my-secret-pw
+ENV MYSQL_DATABASE=dabase-name
+ENV MYSQL_USER=user
+ENV MYSQL_PASSWORD=password
+
+# Expone el puerto en el que MySQL escucha (generalmente el 3306)
+EXPOSE 3306
