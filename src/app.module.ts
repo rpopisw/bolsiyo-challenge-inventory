@@ -13,7 +13,9 @@ import { CreateProductCommandHandler } from './module/application/commands/creat
 import { ProductInfrastructure } from './module/infrastructure/product.infrastructure';
 import { UpdateProductCommandHandler } from './module/application/commands/update-product.command';
 import { DeleteProductCommandHandler } from './module/application/commands/delete-product.command';
-import { ListProductQueryHandler } from "./module/application/queries/list-product.query";
+import { ListProductQueryHandler } from './module/application/queries/list-product.query';
+import { LogsStockInfrastructure } from './module/infrastructure/logs-stock.infrastructure';
+import { AddStockProductCommandHandler } from './module/application/commands/add-stock-product.command';
 
 @Module({
   imports: [
@@ -30,12 +32,14 @@ import { ListProductQueryHandler } from "./module/application/queries/list-produ
     BusinessInfrastructure,
     ListCategoryQueryHandler,
     ProductInfrastructure,
+    LogsStockInfrastructure,
     CreateCategoryCommandHandler,
     DeleteCategoryCommandHandler,
     CreateProductCommandHandler,
     UpdateProductCommandHandler,
     DeleteProductCommandHandler,
     ListProductQueryHandler,
+    AddStockProductCommandHandler,
   ],
 })
 export class AppModule {}

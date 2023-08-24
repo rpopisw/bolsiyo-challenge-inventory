@@ -6,6 +6,7 @@ import { CategoryMapper } from './category.mapper';
 export class ProductMapper {
   static fromDomainToEntity(product: Product): ProductEntity {
     const productEntity = new ProductEntity();
+    productEntity.id = product.properties().id;
     productEntity.name = product.properties().name;
     productEntity.priceSale = product.properties().priceSale;
     productEntity.pricePurchase = product.properties().pricePurchase;
@@ -28,6 +29,7 @@ export class ProductMapper {
       pricePurchase: productEntity.pricePurchase,
       business: BusinessMapper.fromEntityToDomain(productEntity.business),
       category: CategoryMapper.fromEntityToDomain(productEntity.category),
+      stock: productEntity.stock,
     });
   }
 }

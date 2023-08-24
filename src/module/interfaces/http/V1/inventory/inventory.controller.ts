@@ -1,12 +1,14 @@
 import {
   Body,
-  Controller, Delete,
+  Controller,
+  Delete,
   Get,
   Logger,
   Param,
   Patch,
-  Post, Query
-} from "@nestjs/common";
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiHeaders, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateCategoryRequestDto } from './dtos/create-category-request.dto';
 import { CreateCategoryCommand } from '../../../../application/commands/create-category.command';
@@ -19,8 +21,10 @@ import { CreateProductRequestDto } from './dtos/create-product-request.dto';
 import { CreateProductCommand } from '../../../../application/commands/create-product.command';
 import { UpdateProductRequestDto } from './dtos/update-product.request.dto';
 import { UpdateProductCommand } from '../../../../application/commands/update-product.command';
-import { DeleteProductCommand } from "../../../../application/commands/delete-product.command";
-import { ListProductQuery } from "../../../../application/queries/list-product.query";
+import { DeleteProductCommand } from '../../../../application/commands/delete-product.command';
+import { ListProductQuery } from '../../../../application/queries/list-product.query';
+import { ProductIdRequestDto } from "./dtos/product-id-request.dto";
+import { AddStockProductCommand } from "../../../../application/commands/add-stock-product.command";
 
 @ApiTags('Inventory API')
 @Controller('inventory')
@@ -128,5 +132,19 @@ export class InventoryController {
     const { businessCode } = params;
     const query = new ListProductQuery(businessCode, productName);
     return await this.query.execute(query);
+  }
+
+  @Post('/product/:productId/add-stock')
+  @ApiOperation({ summary: 'Add stock to a product' })
+  @ApiHeaders([{ name: 'authorization', description: 'JWT Bearer' }])
+  async addStockProduct(
+    @Body() addStockProductDto: { stock: number },
+    @Param() params: { productId: number },
+  ) {
+    this.logger.log(`Add Stock Product controller`);
+    const { productId } = params;
+    const { stock } = addStockProductDto;
+    const command = new AddStockProductCommand(productId, stock);
+    return await this.command.execute(command);
   }
 }

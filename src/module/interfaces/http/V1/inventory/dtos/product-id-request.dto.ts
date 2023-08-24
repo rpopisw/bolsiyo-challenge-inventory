@@ -5,5 +5,5 @@ export class ProductIdRequestDto {
   @ApiProperty({ example: 1 })
   @IsNumber()
   @IsNotEmpty()
-  id: number;
+  productId: number;
 }

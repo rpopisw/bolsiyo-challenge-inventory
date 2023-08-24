@@ -69,4 +69,8 @@ export class Product extends AggregateRoot {
   delete() {
     this.deletedAt = new Date();
   }
+
+  addStock(quantity: number) {
+    this.stock = this.stock + quantity;
+  }
 }

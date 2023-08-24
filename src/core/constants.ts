@@ -4,4 +4,5 @@ export const MESSAGES_SUCCESS = {
   PRODUCT_CREATED: 'Product created',
   PRODUCT_UPDATED: 'Product updated',
   PRODUCT_DELETED: 'Product deleted',
+  PRODUCT_STOCK_UPDATED: 'Product stock updated',
 };

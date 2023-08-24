@@ -1,4 +1,4 @@
-import { Product } from "../../domain/aggregates/product.aggregate";
+import { Product } from '../../domain/aggregates/product.aggregate';
 
 export interface ListProductResponseDto {
   id: number;

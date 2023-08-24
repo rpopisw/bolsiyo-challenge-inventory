@@ -3,8 +3,8 @@ import { Product } from '../domain/aggregates/product.aggregate';
 import { ProductMapper } from './mappers/product.mapper';
 import { DBProvider } from '../DBProvider';
 import { ProductEntity } from './entities/product.entity';
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { ERROR_MESSAGES_DATABASE } from "../../core/error.constants";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ERROR_MESSAGES_DATABASE } from '../../core/error.constants';
 
 @Injectable()
 export class ProductInfrastructure implements ProductRepository {

@@ -5,7 +5,7 @@ import {
 } from '../dtos/list-product-response.dto';
 import { Inject } from '@nestjs/common';
 import { ProductRepository } from '../../domain/repositories/product.repository';
-import { ProductInfrastructure } from "../../infrastructure/product.infrastructure";
+import { ProductInfrastructure } from '../../infrastructure/product.infrastructure';
 
 export class ListProductQuery implements IQuery {
   constructor(
