@@ -15,7 +15,7 @@ Este proyecto ha sido creado con:
 
 ## Documentación 📚
 
-Luego de ejecutar el proyecto, la documentación de la API estará disponible en http://localhost:3000/api. 
+* Luego de ejecutar el proyecto, la documentación de la API estará disponible en http://localhost:3000/api. 
 Es altamente recomendable revisarla para entender a fondo las capacidades y restricciones de la API.
 
 * La collecion de postman se encuentra en `/apiDocumentation`
