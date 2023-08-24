@@ -14,15 +14,24 @@ Este proyecto ha sido creado con:
 - **Técnicas de Desarrollo**: Clean Architecture, DDD, CQRS, SOLID
 
 ## Documentación 📚
+
 Luego de ejecutar el proyecto, la documentación de la API estará disponible en http://localhost:3000/api. 
 Es altamente recomendable revisarla para entender a fondo las capacidades y restricciones de la API.
 
+* La collecion de postman se encuentra en `/apiDocumentation`
 
 ## Comenzando 🚀
 
 Estas instrucciones te permitirán obtener una copia del proyecto en tu máquina local para propósitos de desarrollo y pruebas.
 
-### Servicios Expostos 🔌
+### Instrucciones Iniciales 📝
+
+Antes de probar la API o el proyecto:
+
+1. **Crear un Usuario**: Es esencial crear un usuario para acceder a todas las funcionalidades. Utiliza el endpoint `/user` para registrarte. Una vez registrado, puedes usar el endpoint `/user/sign-in` para iniciar sesión y obtener un token de autenticación.
+2. **Migration and seeder**: Las migraciones se hacen automaticamenes al iniciar el proyecto, solo la tabla business se llena con un negocio con codigo B001 para pruebas esto tambien es automatico ejecutado el proyecto.
+
+### Servicios Expuestos 🔌
 
 A continuación, se describen brevemente los principales servicios que esta API expone:
 
