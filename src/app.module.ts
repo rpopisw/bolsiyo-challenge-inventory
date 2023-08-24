@@ -13,6 +13,7 @@ import { CreateProductCommandHandler } from './module/application/commands/creat
 import { ProductInfrastructure } from './module/infrastructure/product.infrastructure';
 import { UpdateProductCommandHandler } from './module/application/commands/update-product.command';
 import { DeleteProductCommandHandler } from './module/application/commands/delete-product.command';
+import { ListProductQueryHandler } from "./module/application/queries/list-product.query";
 
 @Module({
   imports: [
@@ -28,12 +29,13 @@ import { DeleteProductCommandHandler } from './module/application/commands/delet
     CategoryInfrastructure,
     BusinessInfrastructure,
     ListCategoryQueryHandler,
+    ProductInfrastructure,
     CreateCategoryCommandHandler,
     DeleteCategoryCommandHandler,
     CreateProductCommandHandler,
     UpdateProductCommandHandler,
     DeleteProductCommandHandler,
-    ProductInfrastructure,
+    ListProductQueryHandler,
   ],
 })
 export class AppModule {}

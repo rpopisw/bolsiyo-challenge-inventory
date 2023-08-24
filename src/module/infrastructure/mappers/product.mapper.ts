@@ -22,6 +22,7 @@ export class ProductMapper {
 
   static fromEntityToDomain(productEntity: ProductEntity): Product {
     return new Product({
+      id: productEntity.id,
       name: productEntity.name,
       priceSale: productEntity.priceSale,
       pricePurchase: productEntity.pricePurchase,

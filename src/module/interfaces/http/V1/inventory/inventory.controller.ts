@@ -5,7 +5,7 @@ import {
   Logger,
   Param,
   Patch,
-  Post
+  Post, Query
 } from "@nestjs/common";
 import { ApiHeaders, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateCategoryRequestDto } from './dtos/create-category-request.dto';
@@ -20,6 +20,7 @@ import { CreateProductCommand } from '../../../../application/commands/create-pr
 import { UpdateProductRequestDto } from './dtos/update-product.request.dto';
 import { UpdateProductCommand } from '../../../../application/commands/update-product.command';
 import { DeleteProductCommand } from "../../../../application/commands/delete-product.command";
+import { ListProductQuery } from "../../../../application/queries/list-product.query";
 
 @ApiTags('Inventory API')
 @Controller('inventory')
@@ -114,5 +115,18 @@ export class InventoryController {
     const { productId } = params;
     const command = new DeleteProductCommand(productId);
     return await this.command.execute(command);
+  }
+
+  @Get('/business/:businessCode/product')
+  @ApiOperation({ summary: 'List all products by business code' })
+  @ApiHeaders([{ name: 'authorization', description: 'JWT Bearer' }])
+  async listProductsByBusinessCode(
+    @Param() params: BusinessCodeRequestDto,
+    @Query('productName') productName: string,
+  ): Promise<Record<string, any>> {
+    this.logger.log(`List Products by Business Code controller`);
+    const { businessCode } = params;
+    const query = new ListProductQuery(businessCode, productName);
+    return await this.query.execute(query);
   }
 }

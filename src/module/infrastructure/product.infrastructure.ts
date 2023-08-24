@@ -38,4 +38,27 @@ export class ProductInfrastructure implements ProductRepository {
     }
     return ProductMapper.fromEntityToDomain(productEntity);
   }
+
+  async listProductsByBusinessCodeAndProductName(
+    businessCode: string,
+    productName?: string,
+  ): Promise<Product[]> {
+    const query = DBProvider.manager
+      .getRepository(ProductEntity)
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.business', 'business')
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('category.business', 'categoryBusiness')
+      .where('business.code = :businessCode', { businessCode })
+      .where('product.deletedAt IS NULL');
+    if (productName) {
+      query.andWhere('product.name LIKE :productName', {
+        productName: `%${productName}%`,
+      });
+    }
+    const productEntities = await query.getMany();
+    return productEntities.map((productEntity) =>
+      ProductMapper.fromEntityToDomain(productEntity),
+    );
+  }
 }

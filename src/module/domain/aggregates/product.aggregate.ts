@@ -11,6 +11,7 @@ export type ProductEssential = {
 };
 
 export type ProductOptional = {
+  id?: number;
   stock?: number;
   createdAt?: Date;
   updatedAt?: Date;
