@@ -9,4 +9,5 @@ export interface ProductRepository {
     productName?: string,
   ): Promise<Product[]>;
   listProductsByCreatedDate(startDate: Date, endDate: Date): Promise<Product[]>;
+  addStock(productId: number, quantity: number): Promise<void>;
 }

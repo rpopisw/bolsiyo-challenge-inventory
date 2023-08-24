@@ -79,7 +79,6 @@ export class ProductInfrastructure implements ProductRepository {
       endDate.getMinutes() + 59,
       endDate.getSeconds() + 59,
     );
-    console.log(startDateWhenDayStart);
     const productEntities = await DBProvider.manager
       .getRepository(ProductEntity)
       .createQueryBuilder('product')
@@ -99,5 +98,18 @@ export class ProductInfrastructure implements ProductRepository {
     return productEntities.map((productEntity) =>
       ProductMapper.fromEntityToDomain(productEntity),
     );
+  }
+
+  async addStock(productId: number, quantity: number): Promise<void> {
+    await DBProvider.manager.transaction(async (manager) => {
+      const productEntity = await manager
+        .getRepository(ProductEntity)
+        .findOne({ where: { id: productId } });
+      if (!productEntity) {
+        throw new NotFoundException(ERROR_MESSAGES_DATABASE.PRODUCT_NOT_FOUND);
+      }
+      productEntity.stock = productEntity.stock + quantity;
+      await manager.save(productEntity);
+    });
   }
 }

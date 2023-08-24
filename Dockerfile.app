@@ -14,6 +14,10 @@ WORKDIR /opt
 RUN apt-get update && apt-get -y install wget libaio1 unzip
 
 WORKDIR /app
+
+# Copiar el archivo .env
+COPY .env ./
+
 COPY --from=builder /build/dist ./dist
 COPY --from=builder /build/package.json .
 COPY --from=builder /build/node_modules ./node_modules

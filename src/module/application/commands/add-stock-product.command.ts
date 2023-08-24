@@ -34,7 +34,7 @@ export class AddStockProductCommandHandler
   ): Promise<AddStockProductResponseDto> {
     const product = await this.productRepository.getById(command.productId);
     product.addStock(command.stock);
-    await this.productRepository.update(product);
+    await this.productRepository.addStock(command.productId, command.stock);
     const logEntity = new LogsStock(command.stock, command.productId);
     await this.logsRepository.createLogStock(logEntity);
     return AddStockResponse.fromDomainToResponse(product);
