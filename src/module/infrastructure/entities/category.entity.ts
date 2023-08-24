@@ -3,10 +3,12 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { BusinessEntity } from './business.entity';
+import { ProductEntity } from './product.entity';
 
 @Entity({ name: 'categories' })
 export class CategoryEntity {
@@ -28,4 +30,7 @@ export class CategoryEntity {
 
   @ManyToOne(() => BusinessEntity, (business) => business.categories)
   business: BusinessEntity;
+
+  @OneToMany(() => ProductEntity, (product) => product.category)
+  products: ProductEntity[];
 }

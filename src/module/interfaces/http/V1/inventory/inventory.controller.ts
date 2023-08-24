@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller, Delete,
+  Get,
+  Logger,
+  Param,
+  Patch,
+  Post
+} from "@nestjs/common";
 import { ApiHeaders, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateCategoryRequestDto } from './dtos/create-category-request.dto';
 import { CreateCategoryCommand } from '../../../../application/commands/create-category.command';
@@ -7,6 +15,11 @@ import { BusinessCodeRequestDto } from './dtos/business-code-request.dto';
 import { DeleteCategoryRequestDto } from './dtos/delete-category.request.dto';
 import { DeleteCategoryCommand } from '../../../../application/commands/delete-category.command';
 import { ListCategoryQuery } from '../../../../application/queries/list-category.query';
+import { CreateProductRequestDto } from './dtos/create-product-request.dto';
+import { CreateProductCommand } from '../../../../application/commands/create-product.command';
+import { UpdateProductRequestDto } from './dtos/update-product.request.dto';
+import { UpdateProductCommand } from '../../../../application/commands/update-product.command';
+import { DeleteProductCommand } from "../../../../application/commands/delete-product.command";
 
 @ApiTags('Inventory API')
 @Controller('inventory')
@@ -51,5 +64,55 @@ export class InventoryController {
     const { businessCode } = params;
     const query = new ListCategoryQuery(businessCode);
     return await this.query.execute(query);
+  }
+
+  @Post('/business/:businessCode/category/:categoryId/product')
+  @ApiOperation({ summary: 'Create a new product' })
+  @ApiHeaders([{ name: 'authorization', description: 'JWT Bearer' }])
+  async createProduct(
+    @Body() createProductDto: CreateProductRequestDto,
+    @Param() params: { businessCode: string; categoryId: number },
+  ): Promise<Record<string, any>> {
+    this.logger.log(`Create Product controller`);
+    const { name, priceSale, pricePurchase } = createProductDto;
+    const { businessCode, categoryId } = params;
+    const command = new CreateProductCommand(
+      name,
+      priceSale,
+      pricePurchase,
+      categoryId,
+      businessCode,
+    );
+    return await this.command.execute(command);
+  }
+
+  @Patch('/product/:productId')
+  @ApiOperation({ summary: 'Update a product' })
+  @ApiHeaders([{ name: 'authorization', description: 'JWT Bearer' }])
+  async updateProduct(
+    @Body() updateProductDto: UpdateProductRequestDto,
+    @Param() params: { productId: number },
+  ) {
+    this.logger.log(`Update Product controller`);
+    const { name, priceSale, pricePurchase, stock } = updateProductDto;
+    const { productId } = params;
+    const command = new UpdateProductCommand(
+      name,
+      priceSale,
+      pricePurchase,
+      stock,
+      productId,
+    );
+    return await this.command.execute(command);
+  }
+
+  @Delete('/product/:productId')
+  @ApiOperation({ summary: 'Delete a product' })
+  @ApiHeaders([{ name: 'authorization', description: 'JWT Bearer' }])
+  async deleteProduct(@Param() params: { productId: number }) {
+    this.logger.log(`Delete Product controller`);
+    const { productId } = params;
+    const command = new DeleteProductCommand(productId);
+    return await this.command.execute(command);
   }
 }

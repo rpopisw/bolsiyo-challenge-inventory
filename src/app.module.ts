@@ -9,6 +9,10 @@ import { BusinessInfrastructure } from './module/infrastructure/business.infrast
 import { CreateCategoryCommandHandler } from './module/application/commands/create-category.command';
 import { DeleteCategoryCommandHandler } from './module/application/commands/delete-category.command';
 import { ListCategoryQueryHandler } from './module/application/queries/list-category.query';
+import { CreateProductCommandHandler } from './module/application/commands/create-product.command';
+import { ProductInfrastructure } from './module/infrastructure/product.infrastructure';
+import { UpdateProductCommandHandler } from './module/application/commands/update-product.command';
+import { DeleteProductCommandHandler } from './module/application/commands/delete-product.command';
 
 @Module({
   imports: [
@@ -26,6 +30,10 @@ import { ListCategoryQueryHandler } from './module/application/queries/list-cate
     ListCategoryQueryHandler,
     CreateCategoryCommandHandler,
     DeleteCategoryCommandHandler,
+    CreateProductCommandHandler,
+    UpdateProductCommandHandler,
+    DeleteProductCommandHandler,
+    ProductInfrastructure,
   ],
 })
 export class AppModule {}

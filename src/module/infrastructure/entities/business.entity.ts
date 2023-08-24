@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { CategoryEntity } from './category.entity';
+import { ProductEntity } from "./product.entity";
 
 @Entity({ name: 'business' })
 export class BusinessEntity {
@@ -31,4 +32,7 @@ export class BusinessEntity {
 
   @OneToMany(() => CategoryEntity, (category) => category.business)
   categories: CategoryEntity[];
+
+  @OneToMany(() => ProductEntity, (product) => product.business)
+  products: ProductEntity[];
 }

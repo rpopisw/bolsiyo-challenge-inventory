@@ -5,17 +5,17 @@ import { BusinessMapper } from './business.mapper';
 export class CategoryMapper {
   static fromDomainToEntity(category: Category): CategoryEntity {
     const categoryEntity = new CategoryEntity();
+    categoryEntity.id = category.properties().id;
     categoryEntity.name = category.properties().name;
-    const business = BusinessMapper.fromDomainToEntity(
+    categoryEntity.business = BusinessMapper.fromDomainToEntity(
       category.properties().business,
     );
-    console.log('business a', business);
-    categoryEntity.business = business;
     return categoryEntity;
   }
 
   static fromEntityToDomain(categoryEntity: CategoryEntity): Category {
     return new Category({
+      id: categoryEntity.id,
       name: categoryEntity.name,
       business: BusinessMapper.fromEntityToDomain(categoryEntity.business),
     });

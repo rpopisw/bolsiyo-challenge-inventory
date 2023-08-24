@@ -4,6 +4,7 @@ import { DataSource, EntityManager } from 'typeorm';
 import { UserEntity } from './infrastructure/entities/user.entity';
 import { BusinessEntity } from './infrastructure/entities/business.entity';
 import { CategoryEntity } from './infrastructure/entities/category.entity';
+import { ProductEntity } from "./infrastructure/entities/product.entity";
 
 let manager: EntityManager;
 @Injectable()
@@ -22,7 +23,12 @@ export class DBProvider {
     };
   }
   async onModuleInit() {
-    const entities = [UserEntity, BusinessEntity, CategoryEntity];
+    const entities = [
+      UserEntity,
+      BusinessEntity,
+      CategoryEntity,
+      ProductEntity,
+    ];
     const config = this.dbConfigMysql();
 
     this.dataSource = await new DataSource({

@@ -47,4 +47,14 @@ export class CategoryInfrastructure implements CategoryRepository {
       CategoryMapper.fromEntityToDomain(category),
     );
   }
+
+  async getCategoryById(categoryId: number): Promise<Category> {
+    const category = await DBProvider.manager
+      .getRepository(CategoryEntity)
+      .createQueryBuilder('category')
+      .leftJoinAndSelect('category.business', 'business')
+      .where('category.id = :categoryId', { categoryId })
+      .getOne();
+    return CategoryMapper.fromEntityToDomain(category);
+  }
 }
