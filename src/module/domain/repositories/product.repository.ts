@@ -8,4 +8,5 @@ export interface ProductRepository {
     businessCode: string,
     productName?: string,
   ): Promise<Product[]>;
+  listProductsByCreatedDate(startDate: Date, endDate: Date): Promise<Product[]>;
 }

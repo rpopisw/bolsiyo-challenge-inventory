@@ -61,4 +61,43 @@ export class ProductInfrastructure implements ProductRepository {
       ProductMapper.fromEntityToDomain(productEntity),
     );
   }
+
+  async listProductsByCreatedDate(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<Product[]> {
+    const startDateWhenDayStart = new Date(
+      startDate.getFullYear(),
+      startDate.getMonth(),
+      startDate.getDate(),
+    );
+    const endDateWhenDayEnd = new Date(
+      endDate.getFullYear(),
+      endDate.getMonth(),
+      endDate.getDate(),
+      endDate.getHours() + 23,
+      endDate.getMinutes() + 59,
+      endDate.getSeconds() + 59,
+    );
+    console.log(startDateWhenDayStart);
+    const productEntities = await DBProvider.manager
+      .getRepository(ProductEntity)
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.business', 'business')
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('category.business', 'categoryBusiness')
+      .where(
+        'product.createdAt >= :startDate AND product.createdAt <= :endDate',
+        {
+          startDate: startDateWhenDayStart,
+          endDate: endDateWhenDayEnd,
+        },
+      )
+      .printSql()
+      .getMany();
+
+    return productEntities.map((productEntity) =>
+      ProductMapper.fromEntityToDomain(productEntity),
+    );
+  }
 }

@@ -16,15 +16,25 @@ import { DeleteProductCommandHandler } from './module/application/commands/delet
 import { ListProductQueryHandler } from './module/application/queries/list-product.query';
 import { LogsStockInfrastructure } from './module/infrastructure/logs-stock.infrastructure';
 import { AddStockProductCommandHandler } from './module/application/commands/add-stock-product.command';
+import { ReportListProductQueryHandler } from './module/application/queries/report-list-product.query';
+import { UserController } from './module/interfaces/http/V1/user/user.controller';
+import { UserInfrastructure } from './module/infrastructure/user.infrastructure';
+import { SignInUserCommandHandler } from './module/application/commands/sign-in-user.command';
+import { CreateUserCommandHandler } from './module/application/commands/create-user.command';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1d' },
+    }),
     CqrsModule,
   ],
-  controllers: [HealthController, InventoryController],
+  controllers: [HealthController, InventoryController, UserController],
   providers: [
     DBProvider,
     Logger,
@@ -33,6 +43,7 @@ import { AddStockProductCommandHandler } from './module/application/commands/add
     ListCategoryQueryHandler,
     ProductInfrastructure,
     LogsStockInfrastructure,
+    UserInfrastructure,
     CreateCategoryCommandHandler,
     DeleteCategoryCommandHandler,
     CreateProductCommandHandler,
@@ -40,6 +51,9 @@ import { AddStockProductCommandHandler } from './module/application/commands/add
     DeleteProductCommandHandler,
     ListProductQueryHandler,
     AddStockProductCommandHandler,
+    ReportListProductQueryHandler,
+    SignInUserCommandHandler,
+    CreateUserCommandHandler,
   ],
 })
 export class AppModule {}

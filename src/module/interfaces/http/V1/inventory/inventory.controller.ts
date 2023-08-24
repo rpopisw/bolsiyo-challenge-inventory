@@ -7,8 +7,8 @@ import {
   Param,
   Patch,
   Post,
-  Query,
-} from '@nestjs/common';
+  Query, UseGuards
+} from "@nestjs/common";
 import { ApiHeaders, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateCategoryRequestDto } from './dtos/create-category-request.dto';
 import { CreateCategoryCommand } from '../../../../application/commands/create-category.command';
@@ -23,8 +23,9 @@ import { UpdateProductRequestDto } from './dtos/update-product.request.dto';
 import { UpdateProductCommand } from '../../../../application/commands/update-product.command';
 import { DeleteProductCommand } from '../../../../application/commands/delete-product.command';
 import { ListProductQuery } from '../../../../application/queries/list-product.query';
-import { ProductIdRequestDto } from "./dtos/product-id-request.dto";
-import { AddStockProductCommand } from "../../../../application/commands/add-stock-product.command";
+import { AddStockProductCommand } from '../../../../application/commands/add-stock-product.command';
+import { ReportListProductQuery } from '../../../../application/queries/report-list-product.query';
+import { JwtAuthGuard } from '../guards/jwt.guard';
 
 @ApiTags('Inventory API')
 @Controller('inventory')
@@ -35,6 +36,7 @@ export class InventoryController {
     private readonly query: QueryBus,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post('/business/:businessCode/category')
   @ApiOperation({ summary: 'Create a new category' })
   @ApiHeaders([{ name: 'authorization', description: 'JWT Bearer' }])
@@ -49,6 +51,7 @@ export class InventoryController {
     return await this.command.execute(command);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/business/:businessCode/category/delete')
   @ApiOperation({ summary: 'Delete a category' })
   @ApiHeaders([{ name: 'authorization', description: 'JWT Bearer' }])
@@ -59,6 +62,7 @@ export class InventoryController {
     return await this.command.execute(command);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/business/:businessCode/category')
   @ApiOperation({ summary: 'List all categories by business code' })
   @ApiHeaders([{ name: 'authorization', description: 'JWT Bearer' }])
@@ -71,6 +75,7 @@ export class InventoryController {
     return await this.query.execute(query);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/business/:businessCode/category/:categoryId/product')
   @ApiOperation({ summary: 'Create a new product' })
   @ApiHeaders([{ name: 'authorization', description: 'JWT Bearer' }])
@@ -91,6 +96,7 @@ export class InventoryController {
     return await this.command.execute(command);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch('/product/:productId')
   @ApiOperation({ summary: 'Update a product' })
   @ApiHeaders([{ name: 'authorization', description: 'JWT Bearer' }])
@@ -111,6 +117,7 @@ export class InventoryController {
     return await this.command.execute(command);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('/product/:productId')
   @ApiOperation({ summary: 'Delete a product' })
   @ApiHeaders([{ name: 'authorization', description: 'JWT Bearer' }])
@@ -121,6 +128,7 @@ export class InventoryController {
     return await this.command.execute(command);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/business/:businessCode/product')
   @ApiOperation({ summary: 'List all products by business code' })
   @ApiHeaders([{ name: 'authorization', description: 'JWT Bearer' }])
@@ -134,6 +142,7 @@ export class InventoryController {
     return await this.query.execute(query);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/product/:productId/add-stock')
   @ApiOperation({ summary: 'Add stock to a product' })
   @ApiHeaders([{ name: 'authorization', description: 'JWT Bearer' }])
@@ -146,5 +155,18 @@ export class InventoryController {
     const { stock } = addStockProductDto;
     const command = new AddStockProductCommand(productId, stock);
     return await this.command.execute(command);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/products')
+  @ApiOperation({ summary: 'List all products between dates' })
+  @ApiHeaders([{ name: 'authorization', description: 'JWT Bearer' }])
+  async listProductsByCreatedDate(
+    @Query('startDate') startDate: Date,
+    @Query('endDate') endDate: Date,
+  ) {
+    this.logger.log(`List Products by Created Date controller`);
+    const query = new ReportListProductQuery(startDate, endDate);
+    return await this.query.execute(query);
   }
 }

@@ -5,3 +5,9 @@ export const ERROR_MESSAGES_DATABASE = {
   CATEGORY_NOT_DELETED: 'Category not deleted',
   PRODUCT_NOT_FOUND: 'Product not found',
 };
+
+export const ERROR_MESSAGES_APPLICATION = {
+  USER_NOT_FOUND: 'User not found',
+  PASSWORD_INCORRECT: 'Password is incorrect',
+  USER_EXIST: 'User already exist',
+};
