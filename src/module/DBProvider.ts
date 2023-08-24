@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DataSource, EntityManager } from 'typeorm';
 import { UserEntity } from './infrastructure/entities/user.entity';
+import { BusinessEntity } from './infrastructure/entities/business.entity';
+import { CategoryEntity } from './infrastructure/entities/category.entity';
 
 let manager: EntityManager;
 @Injectable()
@@ -20,7 +22,7 @@ export class DBProvider {
     };
   }
   async onModuleInit() {
-    const entities = [UserEntity];
+    const entities = [UserEntity, BusinessEntity, CategoryEntity];
     const config = this.dbConfigMysql();
 
     this.dataSource = await new DataSource({
@@ -35,6 +37,16 @@ export class DBProvider {
       });
 
     manager = (this.dataSource as DataSource).manager;
+    // add data table business if not exist in database mysql
+    const business = await manager.findOne(BusinessEntity, {
+      where: { name: 'business' },
+    });
+    if (!business) {
+      const businessEntity = new BusinessEntity();
+      businessEntity.name = 'business';
+      businessEntity.code = 'B001';
+      await manager.save(businessEntity);
+    }
   }
   static get manager() {
     return manager;
